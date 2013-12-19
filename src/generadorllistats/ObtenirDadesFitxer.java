@@ -10,7 +10,6 @@ import java.util.TreeMap;
 public class ObtenirDadesFitxer {
 
     public static void main(String[] args) throws IOException {
-
         // Creo el fitxer que conté les paraules per analitzar
         File fitxer = new File("Assignatures.csv");
         obtenirParaulesFitxer(fitxer);
@@ -24,8 +23,7 @@ public class ObtenirDadesFitxer {
 
         // Obtenim la única linia del fitxer per a llegir les paraules
         TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant = new TreeMap<String, TreeMap<String, Estudiant>>();
-        TreeMap<String, Estudiant> estudiants = new TreeMap<String, Estudiant>();;
-
+        TreeMap<String, Estudiant> estudiants = new TreeMap<String, Estudiant>();
         // Variables per l'Estudiant
         String cognomsNom, grup;
         // Creem un array de les paraules que hi han.
@@ -36,7 +34,6 @@ public class ObtenirDadesFitxer {
 
             cognomsNom = paraules[1].toString();
             grup = paraules[3].toString();
-
             String[] assignatures = paraules[5].split(",");
 
             Estudiant estudiant = new Estudiant(cognomsNom, grup);
@@ -52,9 +49,9 @@ public class ObtenirDadesFitxer {
                 }
             }
         }
-        System.out.println(assignaturesEstudiant);
+        //Per obtenir les assignatures
+        System.out.println(assignaturesEstudiant.keySet().toString());
         // Tanquem el fitxer
         bufferLectura.close();
     }
-
 }
