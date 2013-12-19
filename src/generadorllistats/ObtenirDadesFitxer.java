@@ -1,8 +1,12 @@
-import java.io.BufferedReader;
+package generadorllistats;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.BufferedReader;
 
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class ObtenirDadesFitxer {
 
@@ -27,16 +31,36 @@ public class ObtenirDadesFitxer {
 		BufferedReader bufferLectura = new BufferedReader(lecturaFitxer);
 
 		// Obtenim la única linia del fitxer per a llegir les paraules
-		String linia = bufferLectura.readLine();
-
-		// Creem un array de les paraules que hi han
+               String linia = bufferLectura.readLine();
+              
+               /* String capcalera = " #,\"00_NOM\",\"01_GRUPSCLASSE\",\"02_MATRICULADES\"";
+               
+                int nlinies = 0;
+                if (linia.equals(capcalera)){
+                    System.out.println("Correcte");
+                }
+                while ((bufferLectura.readLine())!=null){
+                   nlinies++; 
+               }
+                System.out.println(nlinies);
+		*/// Creem un array de les paraules que hi han
+                String cognomsNom, grup;
 		String[] paraules = linia.split("\"");
-		String[] patata = paraules[5].split(",");
-		
+                
+                cognomsNom = paraules[1].toString();
+                grup = paraules[3].toString();
+		String[] assignatures = paraules[5].split(",");
+                
+                Estudiant estudiant = new Estudiant(cognomsNom, grup, assignatures);
+                
+                System.out.println(estudiant.getCognomsNom() + estudiant.getGrup() + estudiant.getAssignatures().toString());
+                
+                //SortedMap<String, Estudiant> alumnesAssignatures = new TreeMap<String, Estudiant>();
+                
 		// Tanquem el fitxer
 		bufferLectura.close();
 
-		return paraules;
+		return assignatures ;
 	}
 	
 }
