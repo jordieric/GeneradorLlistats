@@ -3,65 +3,37 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package generadorllistats;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author jordi
- */
 public class Estudiant {
-    
-private String nom, cognom, grup;
-private ArrayList<String> assignatures;
 
-	public Estudiant(String nom, String cognom, String grup,
-			ArrayList<String> assignatures) {
-		this.nom = nom;
-		this.cognom = cognom;
-		this.grup = grup;
-		this.assignatures = assignatures;
-	}
+    private String cognomsNom, grup;
 
-	public String getNom() {
-		return nom;
-	}
+    public Estudiant(String cognomsNom, String grup) {
+        this.cognomsNom = cognomsNom;
+        this.grup = grup;
+    }
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    public String getCognomsNom() {
+        return cognomsNom;
+    }
 
-	public String getCognom() {
-		return cognom;
-	}
+    public void setCognomsNom(String cognomsNom) {
+        this.cognomsNom = cognomsNom;
+    }
 
-	public void setCognom(String cognom) {
-		this.cognom = cognom;
-	}
+    public String getGrup() {
+        return grup;
+    }
 
-	public String getGrup() {
-		return grup;
-	}
+    public void setGrup(String grup) {
+        this.grup = grup;
+    }
 
-	public void setGrup(String grup) {
-		this.grup = grup;
-	}
-
-	public ArrayList<String> getAssignatures() {
-		return assignatures;
-	}
-
-	public void setAssignatures(ArrayList<String> assignatures) {
-		this.assignatures = assignatures;
-	}
-
-	@Override
-	public String toString() {
-		return "Estudiant [nom=" + nom + ", cognom=" + cognom + ", grup="
-				+ grup + ", assignatures=" + assignatures + "]";
-	}
-		
+    @Override
+    public String toString() {
+        return "Estudiant [cognomsNom=" + cognomsNom + ", grup=" + grup + "]";
+    }
 }
-
