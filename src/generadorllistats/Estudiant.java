@@ -5,8 +5,6 @@
  */
 package generadorllistats;
 
-import java.util.ArrayList;
-
 public class Estudiant {
 
     private String cognomsNom, grup;
