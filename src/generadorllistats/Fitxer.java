@@ -51,7 +51,7 @@ public class Fitxer {
 		if (fitxer.getName().endsWith(".csv")) {
 			// Comprovem que la capçalera és exactament igual que la variable
 			// capcalera declarada
-			if (capcaleraFitxer.equals(capcalera)) {
+			if(capcaleraFitxer.equals(capcalera)) {
 				return true;
 			} else {
 				return false;
