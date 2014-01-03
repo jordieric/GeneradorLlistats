@@ -19,13 +19,13 @@ import org.w3c.dom.Element;
 
 public class FitxerXML {
 
-    private String[] assignatura;
+    private static String[] assignatura;
     private static TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant;
 
     public FitxerXML(String[] assignatura,
             TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant) {
         this.assignatura = assignatura;
-        FitxerXML.assignaturesEstudiant = assignaturesEstudiant;
+        this.assignaturesEstudiant = assignaturesEstudiant;
     }
 
     public String[] getAssignatura() {
@@ -55,7 +55,7 @@ public class FitxerXML {
 
         TreeMap<String, Estudiant> estudiants = assignaturesEstudiant.get(assignatura);
 
-		// Obtenim els valors de l'assignatura passada per paràmetre del conjunt
+        // Obtenim els valors de l'assignatura passada per paràmetre del conjunt
         // (TreeMap passat per paràmetre)
         return estudiants;
     }
@@ -66,7 +66,7 @@ public class FitxerXML {
      *
      * @param assignatura : array d'assignatures que l'usuari escollirà
      */
-    public static void crearLlistaXML(String[] assignatura) {
+    public static void crearLlistaXML() {
         try {
 
             // Creem les variables de creació del document XML
@@ -104,7 +104,7 @@ public class FitxerXML {
                     String cognomsNom = estudiants.get(e).getCognomsNom();
                     String grup = estudiants.get(e).getGrup();
 
-					// Creem l'element estudiant a través del mètode
+                    // Creem l'element estudiant a través del mètode
                     // crearEstudiant
                     llista.appendChild(crearEstudiant(doc, cognomsNom, grup));
                 }
@@ -119,7 +119,7 @@ public class FitxerXML {
             StreamResult result = new StreamResult(new File(
                     "llistaGenerada.xml"));
 
-			// Si es vol veure el resultat per la consola, enlloc d'enviar a
+            // Si es vol veure el resultat per la consola, enlloc d'enviar a
             // arxiu
             // StreamResult result = new StreamResult(System.out);
             // Les següents línies són per fer-ho "llegible" per pantalla i
@@ -163,5 +163,4 @@ public class FitxerXML {
         // Retorna l'element alumne acabat de crear
         return alumne;
     }
-
 }
