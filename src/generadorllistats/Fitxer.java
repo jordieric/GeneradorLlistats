@@ -83,7 +83,7 @@ public class Fitxer {
             File fitxer) throws IOException {
 
         // Variables per l'Estudiant
-        String cognomsNom, grup, num;
+        String cognomsNom, grup;
 
         // Creo el TreeMap que contindrà tots els estudiants ordenats
         // alfabèticament dins de cada pròpia assignatura que cursin
@@ -117,7 +117,6 @@ public class Fitxer {
 
                 // Obtenim el nom, cognoms i grup dels estudiants a través de
                 // l'array creat
-                num = paraules[0];
                 cognomsNom = paraules[1];
                 grup = paraules[3];
 
@@ -132,11 +131,12 @@ public class Fitxer {
                 // convingui el valor i la clau en el TreeMap que convingui
                 for (String aux : assignatures) {
                     if (assignaturesEstudiant.containsKey(aux)) {
-                        estudiants.put(num, estudiant);
+                        estudiants = new TreeMap<String, Estudiant>(assignaturesEstudiant.get(aux));
+                        estudiants.put(cognomsNom, estudiant);
                         assignaturesEstudiant.put(aux, estudiants);
                     } else {
                         estudiants = new TreeMap<String, Estudiant>();
-                        estudiants.put(num, estudiant);
+                        estudiants.put(cognomsNom, estudiant);
                         assignaturesEstudiant.put(aux, estudiants);
                     }
                 }
