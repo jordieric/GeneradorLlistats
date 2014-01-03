@@ -83,7 +83,7 @@ public class Fitxer {
             File fitxer) throws IOException {
 
         // Variables per l'Estudiant
-        String cognomsNom, grup;
+        String cognomsNom, grup, num;
 
         // Creo el TreeMap que contindrà tots els estudiants ordenats
         // alfabèticament dins de cada pròpia assignatura que cursin
@@ -117,8 +117,9 @@ public class Fitxer {
 
                 // Obtenim el nom, cognoms i grup dels estudiants a través de
                 // l'array creat
-                cognomsNom = paraules[1].toString();
-                grup = paraules[3].toString();
+                num = paraules[0];
+                cognomsNom = paraules[1];
+                grup = paraules[3];
 
                 // Creem l'estudiant a través de les dades obtingudes
                 Estudiant estudiant = new Estudiant(cognomsNom, grup);
@@ -131,12 +132,12 @@ public class Fitxer {
                 // convingui el valor i la clau en el TreeMap que convingui
                 for (String aux : assignatures) {
                     if (assignaturesEstudiant.containsKey(aux)) {
-                        estudiants.put(estudiant.getGrup(), estudiant);
+                        estudiants.put(num, estudiant);
                         assignaturesEstudiant.put(aux, estudiants);
                     } else {
                         estudiants = new TreeMap<String, Estudiant>();
+                        estudiants.put(num, estudiant);
                         assignaturesEstudiant.put(aux, estudiants);
-                        estudiants.put(cognomsNom, estudiant);
                     }
                 }
             }
@@ -233,7 +234,8 @@ public class Fitxer {
             // "no");
             transformer.transform(source, result);
 
-            System.out.println("La llista s'ha generat satisfactòriament!");
+                        JOptionPane.showMessageDialog(null, "La llista s'ha generat satisfactòriament!",
+                    "Correcte", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();

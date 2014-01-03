@@ -150,6 +150,7 @@ public class GeneradorLlistats extends javax.swing.JFrame {
         String[] assigXML = new String[llistaAssigXML.size()];
         llistaAssigXML.toArray(assigXML);
         //tAssignatures.setListData(assigXML);
+        System.out.println(assigXML);
         Fitxer.crearLlistaXML(assigXML, assigEstudiants);
     }//GEN-LAST:event_bGenerarLlistaActionPerformed
 
