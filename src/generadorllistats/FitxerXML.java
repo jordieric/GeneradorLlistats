@@ -3,6 +3,7 @@ package generadorllistats;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.TreeMap;
+import javax.swing.JOptionPane;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,152 +19,149 @@ import org.w3c.dom.Element;
 
 public class FitxerXML {
 
-	private String[] assignatura;
+    private String[] assignatura;
+    private static TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant;
 
-	public FitxerXML(String[] assignatura,
-			TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant) {
-		this.assignatura = assignatura;
-	}
+    public FitxerXML(String[] assignatura,
+            TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant) {
+        this.assignatura = assignatura;
+        FitxerXML.assignaturesEstudiant = assignaturesEstudiant;
+    }
 
-	public String[] getAssignatura() {
-		return assignatura;
-	}
+    public String[] getAssignatura() {
+        return assignatura;
+    }
 
-	public void setAssignatura(String[] assignatura) {
-		this.assignatura = assignatura;
-	}
+    public void setAssignatura(String[] assignatura) {
+        this.assignatura = assignatura;
+    }
 
-	/**
-	 * M�tode que retornar� el conjunt d'estudiants que estan cursant
-	 * l'assignatura passada per par�metre
-	 * 
-	 * @param conjunt
-	 *            : TreeMap que cont� tots els estudiants agrupats per
-	 *            assignatures que cursen
-	 * @param assignatura
-	 *            : Assignatura que volem analitzar
-	 */
-	public static TreeMap<String, Estudiant> obtenirEstudiants(
-			TreeMap<String, TreeMap<String, Estudiant>> conjunt,
-			String assignatura) {
+    public TreeMap<String, TreeMap<String, Estudiant>> getAssignaturesEstudiant() {
+        return assignaturesEstudiant;
+    }
 
-		TreeMap<String, Estudiant> estudiants = conjunt.get(assignatura);
+    public void setAssignaturesEstudiant(
+            TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant) {
+        FitxerXML.assignaturesEstudiant = assignaturesEstudiant;
+    }
 
-		// Obtenim els valors de l'assignatura passada per par�metre del conjunt
-		// (TreeMap passat per par�metre)
-		return estudiants;
-	}
+    /**
+     * Mètode que retornarà el conjunt d'estudiants que estan cursant
+     * l'assignatura passada per paràmetre
+     *
+     * @param assignatura : Assignatura que volem analitzar
+     */
+    public static TreeMap<String, Estudiant> obtenirEstudiants(String assignatura) {
 
-	/**
-	 * M�tode que a trav�s d'un array d'assignatures i del fitxer que cont� les
-	 * dades dels alumnes crear� les llistes en format XML
-	 * 
-	 * @param assignatura
-	 *            : array d'assignatures que l'usuari escollir�
-	 * @param fitxer
-	 *            : fitxer .csv que cont� les dades
-	 */
-	public static void crearLlistaXML(String[] assignatura,
-			TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant) {
-		try {
+        TreeMap<String, Estudiant> estudiants = assignaturesEstudiant.get(assignatura);
 
-			// Creem les variables de creaci� del document XML
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory
-					.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+		// Obtenim els valors de l'assignatura passada per paràmetre del conjunt
+        // (TreeMap passat per paràmetre)
+        return estudiants;
+    }
 
-			// Element arrel del document. S'anomena llistes
-			Document doc = docBuilder.newDocument();
-			Element rootElement = doc.createElement("llistes");
-			doc.appendChild(rootElement);
+    /**
+     * Mètode que a través d'un array d'assignatures i del fitxer que conté les
+     * dades dels alumnes crearà les llistes en format XML
+     *
+     * @param assignatura : array d'assignatures que l'usuari escollirà
+     */
+    public static void crearLlistaXML(String[] assignatura) {
+        try {
 
-			// Bucle que es far� per a cada assignatura
-			for (int i = 0; i < assignatura.length; i++) {
+            // Creem les variables de creació del document XML
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory
+                    .newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-				// Es crea l'String amb el valor assignatura
-				String materia = assignatura[i];
+            // Element arrel del document. S'anomena llistes
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("llistes");
+            doc.appendChild(rootElement);
 
-				// Es crea l'element llista
-				Element llista = doc.createElement("llista");
-				// Es crea l'atribut materia de la llista
-				llista.setAttribute("materia", materia);
-				rootElement.appendChild(llista);
+            // Bucle que es farà per a cada assignatura
+            for (int i = 0; i < assignatura.length; i++) {
 
-				// Creem un arrayList que contindr� estudiants
-				TreeMap<String, Estudiant> estudiant = obtenirEstudiants(
-						assignaturesEstudiant, assignatura[i]);
+                // Es crea l'String amb el valor assignatura
+                String materia = assignatura[i];
 
-				// Obtenim els cognoms i el grup de l'estudiant
-				ArrayList<Estudiant> estudiants = new ArrayList<Estudiant>(
-						estudiant.values());
+                // Es crea l'element llista
+                Element llista = doc.createElement("llista");
+                // Es crea l'atribut materia de la llista
+                llista.setAttribute("materia", materia);
+                rootElement.appendChild(llista);
 
-				// Bucle que es crear� per acada estudiant
-				for (int e = 0; e < estudiants.size(); e++) {
+                // Creem un arrayList que contindrà estudiants
+                TreeMap<String, Estudiant> estudiant = obtenirEstudiants(assignatura[i]);
 
-					String cognomsNom = estudiants.get(e).getCognomsNom();
-					String grup = estudiants.get(e).getGrup();
+                // Obtenim els cognoms i el grup de l'estudiant
+                ArrayList<Estudiant> estudiants = new ArrayList<Estudiant>(
+                        estudiant.values());
 
-					// Creem l'element estudiant a trav�s del m�tode
-					// crearEstudiant
-					llista.appendChild(crearEstudiant(doc, cognomsNom, grup));
-				}
+                // Bucle que es crearà per acada estudiant
+                for (int e = 0; e < estudiants.size(); e++) {
 
-			}
+                    String cognomsNom = estudiants.get(e).getCognomsNom();
+                    String grup = estudiants.get(e).getGrup();
 
-			// Enregistrar el contingut a disc
-			TransformerFactory transformerFactory = TransformerFactory
-					.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File(
-					"llistaGenerada.xml"));
+					// Creem l'element estudiant a través del mètode
+                    // crearEstudiant
+                    llista.appendChild(crearEstudiant(doc, cognomsNom, grup));
+                }
+
+            }
+
+            // Enregistrar el contingut a disc
+            TransformerFactory transformerFactory = TransformerFactory
+                    .newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(
+                    "llistaGenerada.xml"));
 
 			// Si es vol veure el resultat per la consola, enlloc d'enviar a
-			// arxiu
-			// StreamResult result = new StreamResult(System.out);
-			// Les seg�ents l�nies s�n per fer-ho "llegible" per pantalla i
-			// tamb�r per arxiu
-			// transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			// transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,
-			// "no");
-			transformer.transform(source, result);
+            // arxiu
+            // StreamResult result = new StreamResult(System.out);
+            // Les següents línies són per fer-ho "llegible" per pantalla i
+            // tambér per arxiu
+            // transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,
+            // "no");
+            transformer.transform(source, result);
 
-			System.out.println("La llista s'ha generat satisfact�riament!");
+            JOptionPane.showMessageDialog(null, "El fitxer XML ja ha estat generat!",
+                    "Fitxer Generat", JOptionPane.INFORMATION_MESSAGE);
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (TransformerException tfe) {
+            tfe.printStackTrace();
+        }
+    }
 
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
-		} catch (TransformerException tfe) {
-			tfe.printStackTrace();
-		}
-	}
+    /**
+     * Mètode que crea l'element Estudiant del fitxer XML
+     *
+     * @param doc : Document a on es crearà l'XML
+     * @param cognomsNom : cognomsNom de l'alumne
+     * @param grup : grup de l'alumne
+     * @return L'element Alumne
+     */
+    static private Element crearEstudiant(Document doc, String cognomsNom,
+            String grup) {
+        // Creem l'element alumne
+        Element alumne = doc.createElement("alumne");
 
-	/**
-	 * M�tode que crea l'element Estudiant del fitxer XML
-	 * 
-	 * @param doc
-	 *            : Document a on es crear� l'XML
-	 * @param cognomsNom
-	 *            : cognomsNom de l'alumne
-	 * @param grup
-	 *            : grup de l'alumne
-	 * @return L'element Alumne
-	 */
-	static private Element crearEstudiant(Document doc, String cognomsNom,
-			String grup) {
-		// Creem l'element alumne
-		Element alumne = doc.createElement("alumne");
+        // Elements de l'alumne (Cognom i grup)
+        Element cognom = doc.createElement("cognomsNom");
+        cognom.appendChild(doc.createTextNode(cognomsNom));
+        alumne.appendChild(cognom);
 
-		// Elements de l'alumne (Cognom i grup)
-		Element cognom = doc.createElement("cognomsNom");
-		cognom.appendChild(doc.createTextNode(cognomsNom));
-		alumne.appendChild(cognom);
+        Element classe = doc.createElement("grup");
+        classe.appendChild(doc.createTextNode(grup));
+        alumne.appendChild(classe);
 
-		Element classe = doc.createElement("grup");
-		classe.appendChild(doc.createTextNode(grup));
-		alumne.appendChild(classe);
-
-		// Retorna l'element alumne acabat de crear
-		return alumne;
-	}
+        // Retorna l'element alumne acabat de crear
+        return alumne;
+    }
 
 }
