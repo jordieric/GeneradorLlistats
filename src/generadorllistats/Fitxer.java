@@ -4,9 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.TreeMap;
-
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,6 +19,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class Fitxer {
+	
+	static TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant = null;
 
 	public static void main(String[] args) throws IOException {
 
@@ -28,7 +29,7 @@ public class Fitxer {
 
 		TreeMap<String, TreeMap<String, Estudiant>> patata = obtenirEstudiantsAssignatures(fitxer);
 
-		obtenirEstudiants(patata, "2LC");
+		System.out.println(obtenirEstudiants(patata, "2LC"));
 
 	}
 
@@ -51,7 +52,7 @@ public class Fitxer {
 		if (fitxer.getName().endsWith(".csv")) {
 			// Comprovem que la capçalera és exactament igual que la variable
 			// capcalera declarada
-			if(capcaleraFitxer.equals(capcalera)) {
+			if (capcaleraFitxer.equals(capcalera)) {
 				return true;
 			} else {
 				return false;
@@ -71,12 +72,11 @@ public class Fitxer {
 	 * @param assignatura
 	 *            : Assignatura que volem analitzar
 	 */
-	public static ArrayList<Estudiant> obtenirEstudiants(
+	public static TreeMap<String, Estudiant> obtenirEstudiants(
 			TreeMap<String, TreeMap<String, Estudiant>> conjunt,
 			String assignatura) {
 
-		ArrayList<Estudiant> estudiants = (ArrayList<Estudiant>) conjunt.get(
-				assignatura).values();
+		TreeMap<String, Estudiant> estudiants = conjunt.get(assignatura);
 
 		// Obtenim els valors de l'assignatura passada per paràmetre del conjunt
 		// (TreeMap passat per paràmetre)
@@ -101,7 +101,7 @@ public class Fitxer {
 		// Creo un TreeMap per a obtenir absolutament tots els estudiants
 		// ordenats per les assignatures que cursen, tanmateix per ordre
 		// alfabètic
-		TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant = new TreeMap<String, TreeMap<String, Estudiant>>();
+		assignaturesEstudiant = new TreeMap<String, TreeMap<String, Estudiant>>();
 
 		// Creo el TreeMap que contindrà tots els estudiants ordenats
 		// alfabèticament dins de cada pròpia assignatura que cursin
@@ -155,7 +155,7 @@ public class Fitxer {
 			}
 		} else {
 			// Si el fitxer no és valid ho indiquem a l'usuari
-			System.out.println("Fer una excepció emergent!");
+			JOptionPane.showMessageDialog(null, "Aquest fitxer no és vàlid", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 
 		// Tanquem el buffer de lectura
@@ -181,7 +181,7 @@ public class Fitxer {
 	 * @param fitxer
 	 *            : fitxer .csv que conté les dades
 	 */
-	public static void crearLlistaXML(String[] assignatura, File fitxer) {
+	public static void crearLlistaXML(String[] assignatura, TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant) {
 		try {
 
 			// Creem les variables de creació del document XML
@@ -206,8 +206,7 @@ public class Fitxer {
 				llista.setAttribute("materia", materia);
 
 				// Creem un arrayList que contindrà estudiants
-				ArrayList<Estudiant> estudiant = obtenirEstudiants(
-						obtenirEstudiantsAssignatures(fitxer), assignatura[i]);
+				TreeMap<String, Estudiant> estudiant = obtenirEstudiants(assignaturesEstudiant, assignatura[i]);
 
 				// Bucle que es crearà per acada estudiant de l'arrayList
 				for (int e = 0; e < estudiant.size(); e++) {
@@ -249,8 +248,6 @@ public class Fitxer {
 			pce.printStackTrace();
 		} catch (TransformerException tfe) {
 			tfe.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
 		}
 	}
 
