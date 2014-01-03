@@ -108,7 +108,7 @@ public class Fitxer {
         // Cridem el mètode validarFitxer
         if (validarFitxer(fitxer, linia)) {
 
-            // Mentre llegim linies del fitxer que no siguin res
+            // Mentre no llegim linies del fitxer que no siguin res
             while (((linia = bufferLectura.readLine())) != null) {
 
                 // Creem un array d'String que contindrà les paraules de la
@@ -120,26 +120,25 @@ public class Fitxer {
                 cognomsNom = paraules[1].toString();
                 grup = paraules[3].toString();
 
+                // Creem l'estudiant a través de les dades obtingudes
+                Estudiant estudiant = new Estudiant(cognomsNom, grup);
+
                 // Guardem les assignatures de l'estudiant en l'array
                 // assignatures
                 String[] assignatures = paraules[5].split(",");
-
-                // Creem l'estudiant a través de les dades obtingudes
-                Estudiant estudiant = new Estudiant(cognomsNom, grup);
 
                 // Bucle que recorre l'array d'assignatures i afageix segons
                 // convingui el valor i la clau en el TreeMap que convingui
                 for (String aux : assignatures) {
                     if (assignaturesEstudiant.containsKey(aux)) {
-                        assignaturesEstudiant.get(aux).put(grup,estudiant);
-                        System.out.println(cognomsNom + " - " + aux);
+                        estudiants.put(estudiant.getGrup(), estudiant);
+                        assignaturesEstudiant.put(aux, estudiants);
                     } else {
                         estudiants = new TreeMap<String, Estudiant>();
-                        estudiants.put(grup, estudiant);
                         assignaturesEstudiant.put(aux, estudiants);
+                        estudiants.put(cognomsNom, estudiant);
                     }
                 }
-                
             }
         } else {
             // Si el fitxer no és valid ho indiquem a l'usuari
@@ -210,7 +209,7 @@ public class Fitxer {
 
                     // Creem l'element estudiant a través del mètode
                     // crearEstudiant
-                    rootElement.appendChild(crearEstudiant(doc, cognomsNom,
+                    llista.appendChild(crearEstudiant(doc, cognomsNom,
                             grup));
                 }
 
