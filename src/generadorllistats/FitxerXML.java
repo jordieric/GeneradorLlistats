@@ -17,17 +17,26 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+/**
+ * Classe que creara el fitxer XML amb les dades dels alumnes
+ *
+ * @author jordi
+ */
 public class FitxerXML {
 
+    //Array d'strings que seran les assignatures
     private String[] assignatura;
+    //TreeMap que contindra les dades dels estudiants i les assignatures
     private static TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant;
 
+    //Constructor que rep com a argumens l'array d'assignatures i el TreeMap
     public FitxerXML(String[] assignatura,
             TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant) {
         this.assignatura = assignatura;
         FitxerXML.assignaturesEstudiant = assignaturesEstudiant;
     }
 
+    //GETTERS i SETTERS
     public String[] getAssignatura() {
         return assignatura;
     }
@@ -55,7 +64,7 @@ public class FitxerXML {
 
         TreeMap<String, Estudiant> estudiants = assignaturesEstudiant.get(assignatura);
 
-		// Obtenim els valors de l'assignatura passada per paràmetre del conjunt
+        // Obtenim els valors de l'assignatura passada per paràmetre del conjunt
         // (TreeMap passat per paràmetre)
         return estudiants;
     }
@@ -89,6 +98,7 @@ public class FitxerXML {
                 Element llista = doc.createElement("llista");
                 // Es crea l'atribut materia de la llista
                 llista.setAttribute("materia", materia);
+                //Diem que l'element llista sera fill de llistes
                 rootElement.appendChild(llista);
 
                 // Creem un arrayList que contindrà estudiants
@@ -98,13 +108,13 @@ public class FitxerXML {
                 ArrayList<Estudiant> estudiants = new ArrayList<Estudiant>(
                         estudiant.values());
 
-                // Bucle que es crearà per acada estudiant
+                // Bucle que es crearà per a cada estudiant
                 for (int e = 0; e < estudiants.size(); e++) {
 
                     String cognomsNom = estudiants.get(e).getCognomsNom();
                     String grup = estudiants.get(e).getGrup();
 
-					// Creem l'element estudiant a través del mètode
+                    // Creem l'element estudiant a través del mètode
                     // crearEstudiant
                     llista.appendChild(crearEstudiant(doc, cognomsNom, grup));
                 }
@@ -119,18 +129,12 @@ public class FitxerXML {
             StreamResult result = new StreamResult(new File(
                     "llistaGenerada.xml"));
 
-			// Si es vol veure el resultat per la consola, enlloc d'enviar a
-            // arxiu
-            // StreamResult result = new StreamResult(System.out);
-            // Les següents línies són per fer-ho "llegible" per pantalla i
-            // tambér per arxiu
-            // transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,
-            // "no");
             transformer.transform(source, result);
 
+            //Informem a l'usuari de la creacio satisfactoria del fitxer XML
             JOptionPane.showMessageDialog(null, "El fitxer XML ja ha estat generat!",
                     "Fitxer Generat", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         } catch (TransformerException tfe) {

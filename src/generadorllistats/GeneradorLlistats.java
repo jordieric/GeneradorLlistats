@@ -133,7 +133,6 @@ public class GeneradorLlistats extends javax.swing.JFrame {
         fitxer = examinar.getSelectedFile();
         tNomArxiu.setText(fitxer.getAbsolutePath());
         Fitxer f = new Fitxer();
-       
 
         try {
             assigEstudiants = f.obtenirEstudiantsAssignatures(fitxer);
@@ -146,12 +145,22 @@ public class GeneradorLlistats extends javax.swing.JFrame {
     }//GEN-LAST:event_bExaminarActionPerformed
 
     private void bGenerarLlistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGenerarLlistaActionPerformed
+        //Creem la llista d'assignatures que conte el fitxer
         List<String> llistaAssigXML = new ArrayList<String>(tAssignatures.getSelectedValuesList());
+
+        //Creem l'array de les assignatures amb el tamany total de la llista anterior
         String[] assigXML = new String[llistaAssigXML.size()];
+
+        //Omplim l'array
         llistaAssigXML.toArray(assigXML);
         //tAssignatures.setListData(assigXML);
         System.out.println(assigXML);
-        Fitxer.crearLlistaXML(assigXML, assigEstudiants);
+
+        //Creem un objecte de tipus llistaXML per a crear el fitxer
+        FitxerXML llistaXML = new FitxerXML(assigXML, assigEstudiants);
+
+        //A traves del metode crearLlistaXML creem el fitxer final XML
+        llistaXML.crearLlistaXML(assigXML);
     }//GEN-LAST:event_bGenerarLlistaActionPerformed
 
     private void tAssignaturesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_tAssignaturesValueChanged
