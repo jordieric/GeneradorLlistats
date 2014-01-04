@@ -10,6 +10,6 @@ package generadorllistats;
  *
  * @author jordi
  */
-public class Estudiant {
+public class GeneradorLlistats {
     
 }
