@@ -24,16 +24,21 @@ import org.w3c.dom.Element;
  */
 public class FitxerXML {
 
+    //Ruta de la carpeta de destí del fitxer XML
+    private final String rutaDesti;
+    
     //Array d'strings que seran les assignatures
     private String[] assignatura;
+    
     //TreeMap que contindra les dades dels estudiants i les assignatures
-    private static TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant;
+    private TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant;
 
     //Constructor que rep com a argumens l'array d'assignatures i el TreeMap
     public FitxerXML(String[] assignatura,
-            TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant) {
+            TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant, String rutaDesti) {
         this.assignatura = assignatura;
-        FitxerXML.assignaturesEstudiant = assignaturesEstudiant;
+        this.assignaturesEstudiant = assignaturesEstudiant;
+        this.rutaDesti = rutaDesti;
     }
 
     //GETTERS i SETTERS
@@ -51,7 +56,7 @@ public class FitxerXML {
 
     public void setAssignaturesEstudiant(
             TreeMap<String, TreeMap<String, Estudiant>> assignaturesEstudiant) {
-        FitxerXML.assignaturesEstudiant = assignaturesEstudiant;
+        this.assignaturesEstudiant = assignaturesEstudiant;
     }
 
     /**
@@ -60,7 +65,7 @@ public class FitxerXML {
      *
      * @param assignatura : Assignatura que volem analitzar
      */
-    public static TreeMap<String, Estudiant> obtenirEstudiants(String assignatura) {
+    public TreeMap<String, Estudiant> obtenirEstudiants(String assignatura) {
 
         TreeMap<String, Estudiant> estudiants = assignaturesEstudiant.get(assignatura);
 
@@ -73,9 +78,8 @@ public class FitxerXML {
      * Mètode que a través d'un array d'assignatures i del fitxer que conté les
      * dades dels alumnes crearà les llistes en format XML
      *
-     * @param assignatura : array d'assignatures que l'usuari escollirà
      */
-    public static void crearLlistaXML(String[] assignatura) {
+    public void crearLlistaXML() {
         try {
 
             // Creem les variables de creació del document XML
@@ -126,8 +130,7 @@ public class FitxerXML {
                     .newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(
-                    "llistaGenerada.xml"));
+            StreamResult result = new StreamResult(new File(rutaDesti + "/llistaGenerada.xml"));
 
             transformer.transform(source, result);
 

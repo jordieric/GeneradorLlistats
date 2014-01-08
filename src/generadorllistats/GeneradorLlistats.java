@@ -161,10 +161,10 @@ public class GeneradorLlistats extends javax.swing.JFrame {
         //Conté assignatures, bàsicament per comprovar
         //tAssignatures.setListData(assigXML);
         //Creem un objecte de tipus llistaXML per a crear el fitxer
-        FitxerXML llistaXML = new FitxerXML(assigXML, assigEstudiants);
+        FitxerXML llistaXML = new FitxerXML(assigXML, assigEstudiants, carpetaDesti);
 
         //A traves del metode crearLlistaXML creem el fitxer final XML
-        llistaXML.crearLlistaXML(assigXML);
+        llistaXML.crearLlistaXML();
     }
 
     private void tAssignaturesValueChanged(javax.swing.event.ListSelectionEvent evt) {
